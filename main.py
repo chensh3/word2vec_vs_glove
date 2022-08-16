@@ -6,17 +6,19 @@ import word2vec_model
 # import glove_model
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
+from patent_dataset import df
 
 
-def data_preprocessing(raw_file_lines):
+def data_preprocessing(raw_file):
     data = []
     stop_words = set(stopwords.words('english'))
     # iterate through each sentence in the file
-    for i in sent_tokenize(raw_file_lines):
+    #TODO change to not filter anything
+    for i in sent_tokenize(raw_file):
         temp = []
         # tokenize the sentence into words and avoid stop words
         for j in word_tokenize(i):
-            if not j.isalpha() or j in stop_words:
+            if not j.isalpha() :
                 continue
 
             temp.append(j.lower())
@@ -26,8 +28,8 @@ def data_preprocessing(raw_file_lines):
     return data, flat_list
 
 
-# text_path = r"C:\Users\Chen\Documents\Masters_degree\word2vec_vs_glove\us_patent_data\train.csv"
 
+# text_path = r"C:\Users\Chen\Documents\Masters_degree\word2vec_vs_glove\us_patent_data\train.csv"
 
 # db, words = data_preprocessing(f)
 

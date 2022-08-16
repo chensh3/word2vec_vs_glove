@@ -1,6 +1,7 @@
 from datasets import load_dataset
 # Pretty print
 from pprint import pprint
+import pandas as pd
 
 dataset_dict = load_dataset('HUPD/hupd',
                             name='sample',
@@ -27,4 +28,12 @@ pprint(dataset_dict.cache_files)
 print(f'Train dataset size: {dataset_dict["train"].shape}')
 print(f'Validation dataset size: {dataset_dict["validation"].shape}')
 
-dataset_dict["train"][4]
+train = dataset_dict["train"]
+df = pd.DataFrame(train)
+# data = df["background"][1]
+
+
+
+
+
+
