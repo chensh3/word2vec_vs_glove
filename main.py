@@ -6,7 +6,7 @@ import word2vec_model
 # import glove_model
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
-from patent_dataset import df
+# from patent_dataset import df
 
 
 def data_preprocessing(raw_file):
@@ -28,6 +28,16 @@ def data_preprocessing(raw_file):
     return data, flat_list
 
 
+import pickle
+
+text_path = r"C:\Users\Chen\Documents\Masters_degree\word2vec_vs_glove\alice.txt"
+with open(text_path,encoding='utf-8') as sample:
+    s = sample.read()
+    # Replaces escape character with space
+    f = s.replace("\n", " ")
+db, words = data_preprocessing(f)
+with open('alice1.pickle', 'wb') as handle:
+    pickle.dump(words, handle)
 
 # text_path = r"C:\Users\Chen\Documents\Masters_degree\word2vec_vs_glove\us_patent_data\train.csv"
 
