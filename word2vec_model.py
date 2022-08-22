@@ -8,14 +8,15 @@ warnings.filterwarnings(action='ignore')
 
 
 def train_word2vec(lines, min_count, vec_size, window_size):
+    print("\ntraining new models")
     # Create CBOW model
-    model1 = Word2Vec(lines, min_count=1,
-                      vector_size=365, window=5)
+    model1 = Word2Vec(lines, min_count=min_count,
+                      vector_size=vec_size, window=window_size)
 
     # Create Skip Gram model
-    model2 = Word2Vec(lines, min_count=1, vector_size=365,
-                      window=5, sg=1)
-
+    model2 = Word2Vec(lines, min_count=min_count, vector_size=vec_size,
+                      window=window_size, sg=1)
+    print("\nFinished training new models")
     return model1, model2
 
 
@@ -45,4 +46,3 @@ def check_one_word(model, word, flat_list):
 # print("Cosine similarity between 'alice' " +
 #       "and 'machines' - Skip Gram : ",
 #       model2.wv.similarity('alice', 'day'))
-

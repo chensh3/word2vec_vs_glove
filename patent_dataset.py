@@ -29,11 +29,8 @@ print(f'Train dataset size: {dataset_dict["train"].shape}')
 print(f'Validation dataset size: {dataset_dict["validation"].shape}')
 
 train = dataset_dict["train"]
-df = pd.DataFrame(train)
+df_full = pd.DataFrame(train)
+df = df_full[["patent_number", "title", 'abstract', 'background', 'summary', 'description', ]]
+df["full_text"] = df["abstract"] + '\n' + df['background'] + '\n' + df['summary'] + '\n' + df['description']
+
 # data = df["background"][1]
-
-
-
-
-
-
