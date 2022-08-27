@@ -6,19 +6,22 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 import pickle
 from patent_dataset import df
+from gensim.models import Word2Vec
 
-path = r'C:\Users\Chen\Desktop\Masters_degree\NLP' # PC Chen
+path = r'C:\Users\Chen\Desktop\Masters_degree\NLP'  # PC Chen
+
+
 # path = r'C:/Users/Chen/Documents/Masters_degree/word2vec_vs_glove' # Laptop Chen
 
 def train_word2vec(lines, min_count, vec_size, window_size):
     print("\ntraining new models")
     # Create CBOW model
-    model1 = Word2Vec(lines, min_count=min_count,
-                      vector_size=vec_size, window=window_size)
+    model1 = Word2Vec(lines, min_count = min_count,
+                      vector_size = vec_size, window = window_size, epochs = 30)
 
     # Create Skip Gram model
-    model2 = Word2Vec(lines, min_count=min_count, vector_size=vec_size,
-                      window=window_size, sg=1)
+    model2 = Word2Vec(lines, min_count = min_count, vector_size = vec_size,
+                      window = window_size, sg = 1, epochs = 30)
     print("\nFinished training new models")
     return model1, model2
 
@@ -28,6 +31,7 @@ def check_one_word(model, word, flat_list):
     for i in flat_list:
         a.append(model.wv.similarity(word, i))
     return a
+
 
 def data_preprocessing(raw_file):
     data = []
@@ -63,7 +67,7 @@ for i, patent in enumerate(full_text[:100]):
 
 flat_list = list(set(words))
 
-model_cbow, model_sg = train_word2vec(db, 1, 300, 5)
+model_cbow, model_sg = train_word2vec(db, 1, 300, 5, )
 model_cbow.save(path + r'/output/model_cbow')
 model_sg.save(path + r'/output/model_sg')
 
@@ -84,9 +88,6 @@ model_sg.save(path + r'/output/model_sg')
 ## https://www.kaggle.com/code/venkatkumar001/nlp-starter1-almost-all-basic-concept#13.5.-Word-Embedding
 ## https://www.kaggle.com/code/himanshubag/patent-matching-glove-embedding-lstm
 ## https://rare-technologies.com/word2vec-tutorial/
-
-
-
 
 
 # text_path = path + r'\alice.txt'
