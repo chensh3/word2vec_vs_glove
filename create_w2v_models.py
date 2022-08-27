@@ -1,7 +1,5 @@
 import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
+from gensim.models import Word2Vec
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 import pickle
@@ -58,7 +56,7 @@ full_text = df.full_text
 model_cbow, model_sg = [], []
 db = []
 words = []
-for i, patent in enumerate(full_text[:100]):
+for i, patent in enumerate(full_text):
     print(f"training on file {i}")
     f = patent.replace("\n", " ")
     db_file, words_file = data_preprocessing(f)
