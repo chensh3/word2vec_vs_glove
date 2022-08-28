@@ -1,7 +1,7 @@
 from datasets import load_dataset
-# Pretty print
 from pprint import pprint
 import pandas as pd
+pd.options.mode.chained_assignment = None
 
 dataset_dict = load_dataset('HUPD/hupd',
                             name='sample',
@@ -10,27 +10,22 @@ dataset_dict = load_dataset('HUPD/hupd',
                             train_filing_start_date='2016-01-01',
                             train_filing_end_date='2016-01-21',
                             val_filing_start_date='2016-01-22',
-                            val_filing_end_date='2016-01-31',
+                            val_filing_end_date='2016-01-23',
                             )
 
 print('Loading is done!')
 
-# Dataset info
-print(dataset_dict)
-
 # Print dataset dictionary contents and cache directory
 print('Dataset dictionary contents:')
-pprint(dataset_dict)
-print('Dataset dictionary cached to:')
-pprint(dataset_dict.cache_files)
+pprint(dataset_dict['train'])
+
 
 # Print info about the sizes of the train and validation sets
 print(f'Train dataset size: {dataset_dict["train"].shape}')
-print(f'Validation dataset size: {dataset_dict["validation"].shape}')
 
 train = dataset_dict["train"]
 df_full = pd.DataFrame(train)
 df = df_full[["patent_number", "title", 'abstract', 'background', 'summary', 'description', ]]
-df["full_text"] = df["abstract"] + '\n' + df['background'] + '\n' + df['summary'] + '\n' + df['description']
+cols=['abstract','background','summary','description']
+df.loc[:,"full_text"] = df[cols].apply(lambda row: ' \n '.join(row.values.astype(str)), axis=1)
 
-# data = df["background"][1]
