@@ -17,7 +17,6 @@ model_embedding = Word2Vec.load(path + r'\output\model_cbow')  ## model_cbow
 # model_embedding = Word2Vec.load(path + r'\output\model_sg') ## model_sg
 # model_embedding = Glove.load(path + '\output\glove_100.model') ## model_glove
 
-
 train_df = pd.read_csv(path + r'\us_patent_data\train.csv')
 train_df['feature'] = train_df['target'] + ' ' + train_df['anchor']
 x = train_df['feature']
