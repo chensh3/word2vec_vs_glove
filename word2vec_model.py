@@ -25,24 +25,3 @@ def check_one_word(model, word, flat_list):
     for i in flat_list:
         a.append(model.wv.similarity(word, i))
     return a
-#
-
-# # Print results
-# print("Cosine similarity between 'alice' " +
-#       "and 'wonderland' - CBOW : ",
-#       model1.wv.similarity('alice', 'wonderland'))
-#
-# print("Cosine similarity between 'alice' " +
-#       "and 'machines' - CBOW : ",
-#       model1.wv.similarity('alice', 'machines'))
-#
-
-
-# # Print results
-# print("Cosine similarity between 'alice' " +
-#       "and 'wonderland' - Skip Gram : ",
-#       model2.wv.similarity('alice', 'lewis'))
-#
-# print("Cosine similarity between 'alice' " +
-#       "and 'machines' - Skip Gram : ",
-#       model2.wv.similarity('alice', 'day'))
