@@ -7,7 +7,7 @@ path = r'C:\Users\Chen\Desktop\Masters_degree\NLP'  # PC Chen
 
 
 # path = r'C:/Users/Chen/Documents/Masters_degree/word2vec_vs_glove' # Laptop Chen
-class W2V():
+class W2V:
     def __init__(self, vector_size, window_size, sg = 1, lr = 0.05, workers = 4):
         self.vector_size = vector_size
         self.window_size = window_size
@@ -32,6 +32,7 @@ class W2V():
         print("Finished training word2vec model\n")
 
         self.model = word2vec
+        self.vocab = self.model.wv.index_to_key
         if model_path != "":
             self.model.save(model_path)
 
@@ -60,10 +61,10 @@ class W2V():
         flat_list = list(set(np.concatenate(data).flat))
         return data, flat_list
 
-    def prepare_data(self, df, limit_data = None):
+    def prepare_data(self, data, limit_data = None):
         db = []
         words = []
-        for i, patent in enumerate(df[:limit_data]):
+        for i, patent in enumerate(data[:limit_data]):
             print(f"training on patent num: {i}", end = '\r')
             f = patent.replace("\n", " ")
             db_file, words_file = self.data_preprocessing(f)
@@ -73,7 +74,7 @@ class W2V():
         flat_list = list(set(words))
 
         self.data = db
-        self.vocab = flat_list
+        # self.vocab = flat_list ## WRONG
 
     def delete_unknown_words(self, words):
 
@@ -85,25 +86,30 @@ class W2V():
         most_similar = np.array(self.model.wv.most_similar(word, topn = num)).transpose()[0]
         return most_similar
 
-    @staticmethod
-    def check_synonyms_in_model(target, words, num):
+
+    def check_synonyms_in_model(self,target, words, num):
         count = 0
-        similar_words = get_top_similar_words(target, num)
+        similar_words = self.get_top_similar_words(target, num)
         for word in words:
             if word in similar_words:
                 count += 1
         return count
 
+    def load_model(self, path):
+        self.model = Word2Vec.load(path)
+        self.vocab = self.model.wv.index_to_key
 
-from patent_dataset import df
 
-full_text = df.full_text
+if __name__ == "__main__":
+    from patent_dataset import df
 
-model = W2V(300, 2, 1, 0.05, 4)
-model.prepare_data(full_text, limit_data = 100)
-train_time = model.train_word2vec(num_epochs = 30, model_path = path + r'/output/word2vec_model')
+    full_text = df.full_text
 
-print(f"training the model took : {train_time:0.4f} sec \n")
+    model = W2V(300, 2, 1, 0.05, 4)
+    model.prepare_data(full_text, limit_data = 100)
+    train_time = model.train_word2vec(num_epochs = 30, model_path = path + r'/output/word2vec_model')
+
+    print(f"training the model took : {train_time:0.4f} sec \n")
 
 # get vector of word:
 #  model_cbow.wv.get_vector("network") OR model_cbow.wv["network"]

@@ -21,7 +21,7 @@ pprint(dataset_dict['train'])
 
 
 # Print info about the sizes of the train and validation sets
-print(f'Train dataset size: {dataset_dict["train"].shape}')
+print(f'Train dataset size: {dataset_dict["train"].shape} \n')
 
 train = dataset_dict["train"]
 df_full = pd.DataFrame(train)
