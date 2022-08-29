@@ -8,7 +8,7 @@ path = r'C:\Users\Chen\Desktop\Masters_degree\NLP'  # PC Chen
 
 # path = r'C:/Users/Chen/Documents/Masters_degree/word2vec_vs_glove' # Laptop Chen
 class W2V:
-    def __init__(self, vector_size, window_size, sg = 1, lr = 0.05, workers = 4):
+    def __init__(self, vector_size, window_size, sg=1, lr=0.05, workers=4):
         self.vector_size = vector_size
         self.window_size = window_size
         self.sg = sg
@@ -19,13 +19,13 @@ class W2V:
         self.model = None
         self.vocab = None
 
-    def train_word2vec(self, num_epochs, model_path = ""):
+    def train_word2vec(self, num_epochs, model_path=""):
         print("\n\nTraining word2vec model")
         # Create Skip Gram model ( sg=1 )  or CBOW ( sg=0 )
         start = time.perf_counter()
 
-        word2vec = Word2Vec(self.data, vector_size = self.vector_size, window = self.window_size,
-                            sg = self.sg, epochs = num_epochs, workers = self.workers, alpha = self.learning_rate)
+        word2vec = Word2Vec(self.data, vector_size=self.vector_size, window=self.window_size,
+                            sg=self.sg, epochs=num_epochs, workers=self.workers, min_count=0, alpha=self.learning_rate)
 
         end = time.perf_counter()
 
@@ -61,11 +61,11 @@ class W2V:
         flat_list = list(set(np.concatenate(data).flat))
         return data, flat_list
 
-    def prepare_data(self, data, limit_data = None):
+    def prepare_data(self, data, limit_data=None):
         db = []
         words = []
         for i, patent in enumerate(data[:limit_data]):
-            print(f"training on patent num: {i}", end = '\r')
+            print(f"training on patent num: {i}", end='\r')
             f = patent.replace("\n", " ")
             db_file, words_file = self.data_preprocessing(f)
             db = db + db_file
@@ -82,12 +82,11 @@ class W2V:
         unknown_words = list(set(words) - set(known_words))
         return known_words, unknown_words
 
-    def get_top_similar_words(self, word, num = 5):
-        most_similar = np.array(self.model.wv.most_similar(word, topn = num)).transpose()[0]
+    def get_top_similar_words(self, word, num=5):
+        most_similar = np.array(self.model.wv.most_similar(word, topn=num)).transpose()[0]
         return most_similar
 
-
-    def check_synonyms_in_model(self,target, words, num):
+    def check_synonyms_in_model(self, target, words, num):
         count = 0
         similar_words = self.get_top_similar_words(target, num)
         for word in words:
@@ -106,8 +105,8 @@ if __name__ == "__main__":
     full_text = df.full_text
 
     model = W2V(300, 2, 1, 0.05, 4)
-    model.prepare_data(full_text, limit_data = 100)
-    train_time = model.train_word2vec(num_epochs = 30, model_path = path + r'/output/word2vec_model')
+    model.prepare_data(full_text, limit_data=100)
+    train_time = model.train_word2vec(num_epochs=30, model_path=path + r'/output/word2vec_model')
 
     print(f"training the model took : {train_time:0.4f} sec \n")
 
